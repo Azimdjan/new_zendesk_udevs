@@ -92,8 +92,6 @@ class ZendeskMessaging {
   /// @param  onFailure Optional - If you need to be notified about the login failure
   static Future<void> loginUserCallbacks(
       {required String jwt,
-      String? name,
-      String? email,
       Function(String? id, String? externalId)? onSuccess,
       Function()? onFailure}) async {
     if (jwt.isEmpty) {
@@ -111,7 +109,7 @@ class ZendeskMessaging {
           onFailure != null ? (Map? args) => onFailure() : null);
 
       await _channel.invokeMethod(
-          'loginUser', {'jwt': jwt, 'name': name, 'email': email});
+          'loginUser', {'jwt': jwt});
     } catch (e) {
       debugPrint('ZendeskMessaging - loginUser - Error: $e}');
     }
@@ -121,12 +119,10 @@ class ZendeskMessaging {
   ///
   /// @return   The zendesk userId
   static Future<ZendeskLoginResponse> loginUser(
-      {required String jwt, String? name, String? email}) async {
+      {required String jwt}) async {
     var completer = Completer<ZendeskLoginResponse>();
     await loginUserCallbacks(
       jwt: jwt,
-      name: name,
-      email: email,
       onSuccess: (id, externalId) =>
           completer.complete(ZendeskLoginResponse(id, externalId)),
       onFailure: () =>
