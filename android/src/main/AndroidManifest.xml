@@ -1,2 +1,4 @@
 <manifest package="com.chyiiiiiiiiiiiiii.zendesk_messaging">
+    <meta-data
+        tools:replace="android:resource" />
 </manifest>
